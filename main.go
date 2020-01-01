@@ -10,6 +10,8 @@ import (
 	"os"
 	"strings"
 	"time"
+
+	"github.com/genghisjahn/chess"
 )
 
 //WHITE const for the string "white"
@@ -50,16 +52,21 @@ func main() {
 }
 
 func quiz(g Game) {
-	//TODO: Use this link to get FEN's from PGN
+
+	cgame := chess.NewGame()
+
 	fmt.Println("Opening: ", g.Opening)
 	for _, v := range g.Moves {
-		fmt.Println("Move:", v.Number)
 		if side == WHITE {
+			fmt.Println(cgame.Position().Board().Draw())
 			var text string
 			fmt.Scanln(&text)
+			cgame.MoveStr(text)
 			if text == v.White {
 				fmt.Printf("%s\n", v.Black)
+				cgame.MoveStr(v.Black)
 			} else {
+				fmt.Println(cgame.FEN())
 				fmt.Println("Incorrect.  The move is " + v.White)
 				return
 			}
@@ -74,7 +81,10 @@ func quiz(g Game) {
 				return
 			}
 		}
+		fmt.Println("Move:", v.Number)
 	}
+	fmt.Println(cgame.Position().Board().Draw())
+
 	fmt.Println("Congrats!  You completed the quiz for: ", g.ECO, g.Opening)
 }
 
