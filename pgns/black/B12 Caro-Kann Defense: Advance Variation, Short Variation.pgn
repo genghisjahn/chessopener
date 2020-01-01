@@ -1,0 +1,24 @@
+[Event "My Openings: Ruy Lopez"]
+[Site "https://lichess.org/study/J4Ud15FH/7p55B0Sn"]
+[Result "*"]
+[UTCDate "2019.12.31"]
+[UTCTime "21:50:26"]
+[Variant "Standard"]
+[ECO "C69"]
+[Opening "Ruy Lopez: Exchange Variation, Normal Variation"]
+[Annotator "https://lichess.org/@/genghisjahn"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 dxc6 5. O-O *
+
+
+[Event "My Openings: Caro-Kann Advance 4. Nf3 e6 5. Be2 Nd7"]
+[Site "https://lichess.org/study/J4Ud15FH/0y4RoNhi"]
+[Result "*"]
+[UTCDate "2020.01.01"]
+[UTCTime "01:19:43"]
+[Variant "Standard"]
+[ECO "B12"]
+[Opening "Caro-Kann Defense: Advance Variation, Short Variation"]
+[Annotator "https://lichess.org/@/genghisjahn"]
+
+1. e4 c6 2. d4 d5 3. e5 Bf5 4. Nf3 e6 5. Be2 Nd7 *
