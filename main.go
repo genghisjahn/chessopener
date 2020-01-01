@@ -50,7 +50,7 @@ func main() {
 }
 
 func quiz(g Game) {
-
+	//TODO: Use this link to get FEN's from PGN
 	fmt.Println("Opening: ", g.Opening)
 	for _, v := range g.Moves {
 		fmt.Println("Move:", v.Number)
@@ -61,6 +61,16 @@ func quiz(g Game) {
 				fmt.Printf("%s\n", v.Black)
 			} else {
 				fmt.Println("Incorrect.  The move is " + v.White)
+				return
+			}
+		} else {
+			var text string
+			fmt.Printf("%s\n", v.White)
+			fmt.Scanln(&text)
+			if text == v.Black {
+				fmt.Print("\n")
+			} else {
+				fmt.Println("Incorrect.  The move is " + v.Black)
 				return
 			}
 		}
