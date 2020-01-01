@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"os"
 	"strings"
+	"time"
 )
 
 //WHITE const for the string "white"
@@ -30,7 +32,6 @@ func main() {
 		log.Println("Invalid side: ", ts)
 		return
 	}
-	log.Println("The side is: ", side)
 	d := "pgns/" + side
 	fileInfo, err := ioutil.ReadDir(d)
 	if err != nil {
@@ -42,12 +43,29 @@ func main() {
 		lines := getFileLines(d, file)
 		games = append(games, getGameFromData(lines))
 	}
-	for _, g := range games {
-		fmt.Println(g.Opening)
-		for _, m := range g.Moves {
-			fmt.Println(m)
+	s1 := rand.NewSource(time.Now().UnixNano())
+	r1 := rand.New(s1)
+	gi := r1.Intn(len(games))
+	quiz(games[gi])
+}
+
+func quiz(g Game) {
+
+	fmt.Println("Opening: ", g.Opening)
+	for _, v := range g.Moves {
+		fmt.Println("Move:", v.Number)
+		if side == WHITE {
+			var text string
+			fmt.Scanln(&text)
+			if text == v.White {
+				fmt.Printf("%s\n", v.Black)
+			} else {
+				fmt.Println("Incorrect.  The move is " + v.White)
+				return
+			}
 		}
 	}
+	fmt.Println("Congrats!  You completed the quiz for: ", g.ECO, g.Opening)
 }
 
 func getGameFromData(lines []string) Game {
