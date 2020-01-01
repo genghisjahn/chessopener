@@ -1,8 +1,12 @@
 package main
 
 import (
+	"bufio"
 	"flag"
+	"fmt"
+	"io/ioutil"
 	"log"
+	"os"
 	"strings"
 )
 
@@ -15,6 +19,8 @@ const BLACK = "black"
 var sideMap = map[string]string{"w": WHITE, WHITE: WHITE, "b": BLACK, BLACK: BLACK}
 var side = WHITE
 
+var games []Game
+
 func main() {
 	var ok bool
 	var s = flag.String("side", "w", "type w(hite) or b(lack)")
@@ -25,5 +31,76 @@ func main() {
 		return
 	}
 	log.Println("The side is: ", side)
+	d := "pgns/" + side
+	fileInfo, err := ioutil.ReadDir(d)
+	if err != nil {
+		log.Println(err)
+		return
+	}
 
+	for _, file := range fileInfo {
+		lines := getFileLines(d, file)
+		games = append(games, getGameFromData(lines))
+	}
+	for _, g := range games {
+		fmt.Println(g.Opening)
+		for _, m := range g.Moves {
+			fmt.Println(m)
+		}
+	}
+}
+
+func getGameFromData(lines []string) Game {
+	var g Game
+	for _, v := range lines {
+		if strings.HasPrefix(v, "[ECO") {
+			g.ECO = getVal(v)
+		}
+		if strings.HasPrefix(v, "[Opening") {
+			g.Opening = getVal(v)
+		}
+		if strings.HasPrefix(v, "1.") {
+			g.Moves = getMoves(v)
+		}
+	}
+	return g
+}
+
+func getMoves(s string) []Move {
+	moves := []Move{}
+	parts := strings.Split(s, ".")
+	for k, v := range parts {
+		if len(v) > 1 {
+			t := strings.Split(v, " ")
+			m := Move{}
+			m.Number = k
+			m.White = t[1]
+			if len(t) > 3 {
+				m.Black = t[2]
+			}
+			moves = append(moves, m)
+		}
+	}
+	return moves
+}
+
+func getVal(s string) string {
+	parts := strings.Split(s, "\"")
+	r := parts[1]
+	return r
+}
+
+func getFileLines(dir string, f os.FileInfo) []string {
+	file, err := os.Open(dir + "/" + f.Name())
+	if err != nil {
+		log.Fatalf("failed opening file: %s", err)
+	}
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines)
+	var txtlines []string
+
+	for scanner.Scan() {
+		txtlines = append(txtlines, scanner.Text())
+	}
+	return txtlines
 }
